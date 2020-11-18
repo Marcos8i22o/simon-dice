@@ -1,0 +1,22 @@
+{
+  "name": "juego-simon-dice",
+  "version": "1.0.0",
+  "description": "version propia del juego \"Simon dice\" basado en el repositorio de \"r-argentina-programa\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marcos8i22o/simon-dice.git"
+  },
+  "author": "Marcos Jinno",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marcos8i22o/simon-dice/issues"
+  },
+  "homepage": "https://github.com/Marcos8i22o/simon-dice#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.3"
+  }
+}
