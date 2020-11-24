@@ -1,7 +1,7 @@
 {
   "name": "juego-simon-dice",
   "version": "1.0.0",
-  "description": "version propia del juego \"Simon dice\" basado en el repositorio de \"r-argentina-programa\"",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Marcos8i22o/simon-dice#readme",
   "dependencies": {
-    "bootstrap": "^4.5.3"
+    "bootstrap": "^4.5.3",
+    "jquery": "^3.5.1"
   }
 }

@@ -1,11 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/styles.css">
     <title>Simon dice</title>
-</head>
-<body>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="alert alert-primary col-sm-7 text-center" role="alert">
+          Presiona "Empezar" para jugar
+        </div>
+        <div class="col-sm">Ronda #</div>
+        <button type="button" class="col-sm-2 btn btn-sm btn-primary">Empezar</button>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-sm cuadro" id="cuadro-1">A</div>
+        <div class="col-sm cuadro" id="cuadro-2">B</div>
+      </div>
+      <div class="row">
+        <div class="col-sm cuadro" id="cuadro-3">C</div>
+        <div class="col-sm cuadro" id="cuadro-4">D</div>
+      </div>
+      
+      
+
+      
     
-</body>
+  </body>
 </html>
