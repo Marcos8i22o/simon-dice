@@ -1,10 +1,8 @@
-let $botonEmpezar = document.querySelector('#boton-empezar');
 
 let $botonEmpezar = document.querySelector("#boton-empezar");
 
 let secuenciaMaquina = [];
 let secuenciaUsuario = [];
-
 
 $botonEmpezar.onclick = function (event) {
   actualizarEstado("Espere su turno");
