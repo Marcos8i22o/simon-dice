@@ -1,4 +1,3 @@
-
 let $botonEmpezar = document.querySelector("#boton-empezar");
 
 let secuenciaMaquina = [];
@@ -6,29 +5,43 @@ let secuenciaUsuario = [];
 
 $botonEmpezar.onclick = function (event) {
   actualizarEstado("Espere su turno");
-  //bloquearInputUsuario();
-
-  secuenciaMaquina.push(obtenerCuadroAleatorio());
-  secuenciaMaquina[secuenciaMaquina.length - 1].style.opacity = 1;
-
   deshabilitarBotonEmpezar();
-  event.preventDefault();
+  bloquearInputUsuario();
+  manejarRonda();
+  desbloquearInputUsuario();
+  //event.preventDefault();
 };
 
-/*******************USUARIO*************************/
+function manejarRonda() {
+  secuenciaMaquina.push(obtenerCuadroAleatorio());
+  const indiceMaquina = "#" + secuenciaMaquina[secuenciaMaquina.length - 1].id;
+  //console.log(indiceMaquina)
+
+  opacidad(indiceMaquina, 1);
+  setTimeout(function () {
+    opacidad(indiceMaquina, 0.5);
+  }, 1000);
+}
+
+/*******************INICIO**USUARIO*************************/
+
 function manejarInputUsuario(e) {
-  const indiceUsuario =  (e.target.id);  
-  const $cuadroUsuario = document.querySelector(`#${indiceUsuario}`);
-	opacidad(indiceUsuario,1);
+  const indiceUsuario = "#" + e.target.id;
+
+  secuenciaUsuario.push(document.querySelector(indiceUsuario));
+  opacidad(indiceUsuario, 1);
+  setTimeout(function () {
+    opacidad(indiceUsuario, 0.5);
+  }, 1000);
 }
 
-document.querySelector('body').onclick = manejarInputUsuario;
- 
+document.querySelector("#tablero").onclick = manejarInputUsuario;
 
-function opacidad(numero,grado) {
-  document.querySelector(`#${numero}`).style.opacity = grado;
+function opacidad(numero, grado) {
+  
+  document.querySelector(numero).style.opacity = grado;
 }
-/*****************FIN USUARIO************************** */
+/*****************FIN**USUARIO************************** */
 
 function obtenerCuadroAleatorio() {
   const $cuadros = document.querySelectorAll(".cuadro");
@@ -46,4 +59,16 @@ function deshabilitarBotonEmpezar() {
 
 function habilitarBotonEmpezar() {
   $botonEmpezar.disabled = false;
+}
+
+function bloquearInputUsuario() {
+  const $cuadros = document.querySelectorAll(".cuadro");
+  $cuadros.forEach(function ($cuadros) {
+    $cuadros.id.disabled = true;
+  });
+}
+
+function desbloquearInputUsuario() {
+  const $cuadros = document.querySelectorAll(".cuadro");
+  $cuadros.disabled = false;
 }
