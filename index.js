@@ -20,6 +20,7 @@ $botonEmpezar.onclick = function (event) {
 
 function manejarRonda() {
 /************OBTIENE CUADRO DE FORMA ALEATORIA********************/  
+   obtenerCuadroAleatorio();
 /************ACCEDE AL ID DEL CUADRO OBTENIDO*********************/
     const indiceMaquina =
       "#" + secuenciaMaquina[secuenciaMaquina.length - 1].id;
@@ -61,7 +62,8 @@ function opacidad(numero, grado) {
 function obtenerCuadroAleatorio() {
   const $cuadros = document.querySelectorAll(".cuadro");
   const indice = Math.floor(Math.random() * $cuadros.length);
-  return $cuadros[indice];
+  secuenciaMaquina.push($cuadros[indice]);
+  return secuenciaMaquina;
 }
 
 function actualizarEstado(estado) {
