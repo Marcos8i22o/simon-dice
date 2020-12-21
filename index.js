@@ -8,19 +8,34 @@ $botonEmpezar.onclick = function (event) {
   deshabilitarBotonEmpezar();
   bloquearInputUsuario();
   manejarRonda();
-  desbloquearInputUsuario();
-  //event.preventDefault();
+  event.preventDefault();
 };
 
-function manejarRonda() {
-  secuenciaMaquina.push(obtenerCuadroAleatorio());
-  const indiceMaquina = "#" + secuenciaMaquina[secuenciaMaquina.length - 1].id;
-  //console.log(indiceMaquina)
+/*setTimeout(function () {
+  const seguirJugando = compararJugadas(secuenciaUsuario, secuenciaMaquina);
+}, 10000);
+*/
+/*if (seguirJugando) {
+}*/
 
-  opacidad(indiceMaquina, 1);
-  setTimeout(function () {
-    opacidad(indiceMaquina, 0.5);
-  }, 1000);
+function manejarRonda() {
+/************OBTIENE CUADRO DE FORMA ALEATORIA********************/  
+/************ACCEDE AL ID DEL CUADRO OBTENIDO*********************/
+    const indiceMaquina =
+      "#" + secuenciaMaquina[secuenciaMaquina.length - 1].id;
+
+    document.querySelector("#ronda").innerText = "Ronda: 1";
+
+    opacidad(indiceMaquina, 1);
+
+    setTimeout(function () {
+      opacidad(indiceMaquina, 0.5);
+      //actualizarEstado("Le toca a usted");
+      //desbloquearInputUsuario();
+    }, 1000);
+
+    document.querySelector("#tablero").onclick = manejarInputUsuario;
+  
 }
 
 /*******************INICIO**USUARIO*************************/
@@ -33,15 +48,15 @@ function manejarInputUsuario(e) {
   setTimeout(function () {
     opacidad(indiceUsuario, 0.5);
   }, 1000);
+
+  actualizarEstado("Espere su turno");
 }
 
-document.querySelector("#tablero").onclick = manejarInputUsuario;
+/*****************FIN**USUARIO************************** */
 
 function opacidad(numero, grado) {
-  
   document.querySelector(numero).style.opacity = grado;
 }
-/*****************FIN**USUARIO************************** */
 
 function obtenerCuadroAleatorio() {
   const $cuadros = document.querySelectorAll(".cuadro");
@@ -64,11 +79,24 @@ function habilitarBotonEmpezar() {
 function bloquearInputUsuario() {
   const $cuadros = document.querySelectorAll(".cuadro");
   $cuadros.forEach(function ($cuadros) {
-    $cuadros.id.disabled = true;
+    $cuadros.style.pointerEvents = "none";
   });
 }
 
 function desbloquearInputUsuario() {
   const $cuadros = document.querySelectorAll(".cuadro");
-  $cuadros.disabled = false;
+  $cuadros.forEach(function ($cuadros) {
+    $cuadros.style.pointerEvents = "all";
+  });
+}
+
+function compararJugadas(jugadaUsuario, jugadaMaquina) {
+  for (let i = 0; i < jugadaMaquina.length; i++) {
+    if (jugadaUsuario[i] === jugadaMaquina[i]) {
+      return "iguales";
+    } else {
+      //console.log("distintos")
+      return "perdió";
+    }
+  }
 }
