@@ -18,4 +18,5 @@
     height: 200px;
     opacity: 0.5;
     transition: opacity 500ms;
+}  transition: opacity 500ms;
 }
