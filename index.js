@@ -1,4 +1,10 @@
-let $botonEmpezar = document.querySelector("#boton-empezar");
+
+const $botonEmpezar = document.querySelector("#boton-empezar");
+//const $tablero = document.querySelector("#tablero");
+const $btn1 = document.querySelector("#cuadro-1");
+const $btn2 = document.querySelector("#cuadro-2");
+const $btn3 = document.querySelector("#cuadro-3");
+const $btn4 = document.querySelector("#cuadro-4");
 
 let secuenciaMaquina = [];
 let secuenciaUsuario = [];
@@ -6,54 +12,102 @@ let secuenciaUsuario = [];
 $botonEmpezar.onclick = function (event) {
   actualizarEstado("Espere su turno");
   deshabilitarBotonEmpezar();
-  bloquearInputUsuario();
+  //bloquearInputUsuario();
   manejarRonda();
+
   event.preventDefault();
 };
 
-/*setTimeout(function () {
-  const seguirJugando = compararJugadas(secuenciaUsuario, secuenciaMaquina);
-}, 10000);
-*/
-/*if (seguirJugando) {
-}*/
-
 function manejarRonda() {
-/************OBTIENE CUADRO DE FORMA ALEATORIA********************/  
-   obtenerCuadroAleatorio();
-/************ACCEDE AL ID DEL CUADRO OBTENIDO*********************/
-    const indiceMaquina =
-      "#" + secuenciaMaquina[secuenciaMaquina.length - 1].id;
+  /************OBTIENE CUADRO DE FORMA ALEATORIA********************/
+  obtenerCuadroAleatorio();
 
-    document.querySelector("#ronda").innerText = "Ronda: 1";
+  /************ACCEDE AL ID DEL CUADRO OBTENIDO*********************/
+  const $indiceMaquina = "#" + secuenciaMaquina[secuenciaMaquina.length - 1].id;
+  /****************------------------*******************************/
+  document.querySelector("#ronda").innerText = "Ronda: 1";
+  /*********************RESALTA CUADRO*******************************/
+  resaltarCuadro($indiceMaquina);
 
-    opacidad(indiceMaquina, 1);
+  /*****************DEJA DE RESALTAR CUADRO**************************/
 
-    setTimeout(function () {
-      opacidad(indiceMaquina, 0.5);
-      //actualizarEstado("Le toca a usted");
-      //desbloquearInputUsuario();
-    }, 1000);
+  //   setTimeout(function () {
+  //   let resultado;
+  //   opacidad($indiceMaquina, 0.5);
+  //   actualizarEstado("Le toca a usted");
+  //   desbloquearInputUsuario();
+  //  $tablero.onclick = manejarInputUsuario;
+  //   setTimeout(function () {
+  //     resultado = compararJugadas(secuenciaMaquina, secuenciaUsuario);
+  //     if (resultado === "") {
+  //       secuenciaMaquina.forEach(function (){
+  //         manejarRonda();
+  //       });
+  //     }else{
+  //       actualizarEstado(`¡Ha perdido!. Presione el botón "Empezar" para volver a jugar`);
+  //     }
+  //   }, 5000);
+  // }, 1000);
 
-    document.querySelector("#tablero").onclick = manejarInputUsuario;
-  
+  //console.log(e.target.id)
+
+  function elegirCuadro() {
+    $btn1.onclick = function () {
+      secuenciaUsuario.push($btn1);
+      resaltarCuadro("#cuadro-1");
+    };
+
+    $btn2.onclick = function () {
+      secuenciaUsuario.push($btn2);
+      resaltarCuadro("#cuadro-2");
+    };
+    $btn3.onclick = function () {
+      secuenciaUsuario.push($btn3);
+      resaltarCuadro("#cuadro-3");
+    };
+    $btn4.onclick = function () {
+      secuenciaUsuario.push($btn4);
+      resaltarCuadro("#cuadro-4");
+    };
+  }
 }
 
+manejarInputUsuario(event);
 /*******************INICIO**USUARIO*************************/
 
-function manejarInputUsuario(e) {
-  const indiceUsuario = "#" + e.target.id;
-
-  secuenciaUsuario.push(document.querySelector(indiceUsuario));
-  opacidad(indiceUsuario, 1);
-  setTimeout(function () {
-    opacidad(indiceUsuario, 0.5);
-  }, 1000);
-
+function manejarInputUsuario(event) {
+  const $indiceUsuario = event.target.id;
+  /*******************USUARIO ELIGE CUADRO********************/
+  const $cuadroUsuario = document.querySelector($indiceUsuario);
+  secuenciaUsuario.push($cuadroUsuario);
+  /*******************RESALTA CUADRO**************************/
+  resaltarCuadro($indiceUsuario);
   actualizarEstado("Espere su turno");
+
+  return secuenciaUsuario;
 }
 
-/*****************FIN**USUARIO************************** */
+/*****************FIN**USUARIO****************************/
+
+/********************COMPARA JUGADAS**********************/
+
+/*if (seguirJugando === "") {
+    secuenciaMaquina.forEach(function (element) {
+      const indiceCuadro = "#" + element.id;
+      opacidad(indiceCuadro, 1);
+      setTimeout(function () {
+        opacidad(indiceCuadro, 0.5);
+        manejarRonda();
+      }, 1000);
+    });
+  } else {
+    actualizarEstado(`¡Ha perdido!. Presione el botón "Empezar" para volver a jugar`);
+    secuenciaUsuario = [];
+    secuenciaMaquina = [];
+    habilitarBotonEmpezar();
+  }*/
+
+/*****************FIN COMPARA JUGADAS*********************/
 
 function opacidad(numero, grado) {
   document.querySelector(numero).style.opacity = grado;
@@ -92,13 +146,19 @@ function desbloquearInputUsuario() {
   });
 }
 
-function compararJugadas(jugadaUsuario, jugadaMaquina) {
+function compararJugadas(jugadaMaquina, jugadaUsuario) {
   for (let i = 0; i < jugadaMaquina.length; i++) {
-    if (jugadaUsuario[i] === jugadaMaquina[i]) {
-      return "iguales";
-    } else {
-      //console.log("distintos")
+    if (jugadaUsuario[i] !== jugadaMaquina[i]) {
       return "perdió";
     }
   }
+
+  return "";
+}
+
+function resaltarCuadro(indice) {
+  opacidad(indice, 1);
+  setTimeout(function () {
+    opacidad(indice, 0.5);
+  }, 1000);
 }
