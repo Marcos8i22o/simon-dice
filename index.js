@@ -5,22 +5,50 @@ const $btn1 = document.querySelector("#cuadro-1");
 const $btn2 = document.querySelector("#cuadro-2");
 const $btn3 = document.querySelector("#cuadro-3");
 const $btn4 = document.querySelector("#cuadro-4");
+const $tablero = document.querySelector("#tablero");
 
 let secuenciaMaquina = [];
-let secuenciaUsuario = [];
+let secuenciaJugador = [];
 
 $botonEmpezar.onclick = function (event) {
-  actualizarEstado("Espere su turno");
   deshabilitarBotonEmpezar();
-  //bloquearInputUsuario();
   manejarRonda();
+
+  // let borrarSetInterval = setInterval(function () {
+  //   if (avanzaRonda) {
+  //     let i = 0;
+  //     setTimeout(function () {
+  //       manejarRonda();
+  //     }, (secuenciaMaquina.length + 1) * 3000);
+  //     resaltarCuadro(`#${secuenciaMaquina[i].id}`);
+  //     i++;
+  //   } else {
+  //     secuenciaMaquina = [];
+  //     actualizarEstado("Ha perdido");
+  //     clearTimeout(borrarSetInterval);
+  //     habilitarBotonEmpezar();
+  //   }
+  // }, 5000);
 
   event.preventDefault();
 };
+/*************************************** */
+
+
 
 function manejarRonda() {
   /************OBTIENE CUADRO DE FORMA ALEATORIA********************/
+  /*------Turno de la máquina-----*/
+  let avanzaRonda;
+  
+  actualizarEstado("Espere su turno");
+  bloquearInputJugador();
   obtenerCuadroAleatorio();
+  resaltarCuadro(obtenerIdCuadro(secuenciaMaquina));
+  desbloquearInputJugador();
+  setTimeout(function () {
+   actualizarEstado("Su turno"); 
+  },3000); 
 
   /************ACCEDE AL ID DEL CUADRO OBTENIDO*********************/
   const $indiceMaquina = "#" + secuenciaMaquina[secuenciaMaquina.length - 1].id;
@@ -83,8 +111,16 @@ function manejarInputUsuario(event) {
   /*******************RESALTA CUADRO**************************/
   resaltarCuadro($indiceUsuario);
   actualizarEstado("Espere su turno");
+  $tablero.onclick = function (event) {
+    secuenciaJugador.push(event.target);
+    resaltarCuadro(obtenerIdCuadro(secuenciaJugador));
+  };
 
   return secuenciaUsuario;
+  setTimeout(function () {
+    avanzaRonda = compararJugadas(secuenciaMaquina, secuenciaJugador);
+    avanzarRonda(avanzaRonda);
+  }, 4000);
 }
 
 /*****************FIN**USUARIO****************************/
@@ -100,14 +136,33 @@ function manejarInputUsuario(event) {
         manejarRonda();
       }, 1000);
     });
+function avanzarRonda(avanzaRonda) {
+  if (avanzaRonda) {
+    setTimeout(manejarRonda,2000);
   } else {
     actualizarEstado(`¡Ha perdido!. Presione el botón "Empezar" para volver a jugar`);
     secuenciaUsuario = [];
     secuenciaMaquina = [];
     habilitarBotonEmpezar();
   }*/
+    actualizarEstado("Ha perdido la partida");
+  }
+}
+
+function compararJugadas(arr1, arr2) {
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) {
+      return false;
+    }
+  }
+  return true;
+}
 
 /*****************FIN COMPARA JUGADAS*********************/
+function obtenerIdCuadro(arr) {
+  const idCuadro = `#${arr[arr.length - 1].id}`;
+  return idCuadro;
+}
 
 function opacidad(numero, grado) {
   document.querySelector(numero).style.opacity = grado;
@@ -117,6 +172,7 @@ function obtenerCuadroAleatorio() {
   const $cuadros = document.querySelectorAll(".cuadro");
   const indice = Math.floor(Math.random() * $cuadros.length);
   secuenciaMaquina.push($cuadros[indice]);
+
   return secuenciaMaquina;
 }
 
@@ -132,14 +188,14 @@ function habilitarBotonEmpezar() {
   $botonEmpezar.disabled = false;
 }
 
-function bloquearInputUsuario() {
+function bloquearInputJugador() {
   const $cuadros = document.querySelectorAll(".cuadro");
   $cuadros.forEach(function ($cuadros) {
     $cuadros.style.pointerEvents = "none";
   });
 }
 
-function desbloquearInputUsuario() {
+function desbloquearInputJugador() {
   const $cuadros = document.querySelectorAll(".cuadro");
   $cuadros.forEach(function ($cuadros) {
     $cuadros.style.pointerEvents = "all";
@@ -155,6 +211,7 @@ function compararJugadas(jugadaMaquina, jugadaUsuario) {
 
   return "";
 }
+
 
 function resaltarCuadro(indice) {
   opacidad(indice, 1);
