@@ -41,6 +41,7 @@ function manejarRonda() {
   /*------Turno de la máquina-----*/
   let avanzaRonda;
   
+
   actualizarEstado("Espere su turno");
   bloquearInputJugador();
   obtenerCuadroAleatorio();
@@ -99,9 +100,11 @@ function manejarRonda() {
     };
   }
 }
+  secuenciaJugador = [];
 
 manejarInputUsuario(event);
 /*******************INICIO**USUARIO*************************/
+  obtenerCuadroAleatorio();
 
 function manejarInputUsuario(event) {
   const $indiceUsuario = event.target.id;
@@ -115,10 +118,27 @@ function manejarInputUsuario(event) {
     secuenciaJugador.push(event.target);
     resaltarCuadro(obtenerIdCuadro(secuenciaJugador));
   };
+  secuenciaMaquina.forEach(function (element, index) {
+    setTimeout(resaltarCuadro(obtenerIdCuadro(element.id)), index * 1000);
+  });
+
+  desbloquearInputJugador();
+  actualizarEstado("Su turno...");
+
+  secuenciaMaquina.forEach(function (element, index) {
+    $tablero.onclick = function (event) {
+      secuenciaJugador.push(event.target);
+      setTimeout(
+        resaltarCuadro(obtenerIdCuadro(secuenciaJugador[index].id)),
+        index * 1000
+      );
+    };
+  });
 
   return secuenciaUsuario;
   setTimeout(function () {
     avanzaRonda = compararJugadas(secuenciaMaquina, secuenciaJugador);
+    const avanzaRonda = compararJugadas(secuenciaMaquina, secuenciaJugador);
     avanzarRonda(avanzaRonda);
   }, 4000);
 }
@@ -139,6 +159,7 @@ function manejarInputUsuario(event) {
 function avanzarRonda(avanzaRonda) {
   if (avanzaRonda) {
     setTimeout(manejarRonda,2000);
+    manejarRonda();
   } else {
     actualizarEstado(`¡Ha perdido!. Presione el botón "Empezar" para volver a jugar`);
     secuenciaUsuario = [];
@@ -161,6 +182,8 @@ function compararJugadas(arr1, arr2) {
 /*****************FIN COMPARA JUGADAS*********************/
 function obtenerIdCuadro(arr) {
   const idCuadro = `#${arr[arr.length - 1].id}`;
+function obtenerIdCuadro(posicionArreglo) {
+  const idCuadro = `#${posicionArreglo}`;
   return idCuadro;
 }
 
