@@ -3,9 +3,12 @@ const $tablero = document.querySelector("#tablero");
 
 let secuenciaMaquina = [];
 let secuenciaJugador = [];
+let avanzaRonda = true;
+let tiempoPorRonda;
 
 $botonEmpezar.onclick = function (event) {
   deshabilitarBotonEmpezar();
+
   manejarRonda();
 
   event.preventDefault();
@@ -15,38 +18,48 @@ $botonEmpezar.onclick = function (event) {
 function manejarRonda() {
   /*------Turno de la máquina-----*/
 
-  actualizarEstado("Espere su turno");
-  bloquearInputJugador();
+  tiempoPorRonda = secuenciaMaquina.length+1;
 
-  secuenciaJugador = [];
+  actualizarEstado("Espere su turno");
+  mostrarRonda(tiempoPorRonda);
+  bloquearInputJugador();
 
   obtenerCuadroAleatorio();
 
   secuenciaMaquina.forEach(function (element, index) {
-    setTimeout(resaltarCuadro(obtenerIdCuadro(element.id)), index * 1000);
+    setTimeout(function () {
+      resaltarCuadro(obtenerIdCuadro(element.id));
+    }, index * 500);
   });
 
   desbloquearInputJugador();
-  actualizarEstado("Su turno...");
+  setTimeout(function () {
+    actualizarEstado("Su turno...");
 
-  secuenciaMaquina.forEach(function (element, index) {
-    $tablero.onclick = function (event) {
-      secuenciaJugador.push(event.target);
-      setTimeout(
-        resaltarCuadro(obtenerIdCuadro(secuenciaJugador[index].id)),
-        index * 1000
-      );
-    };
-  });
+    secuenciaMaquina.forEach(function(){
+      seleccionarCuadroUsuario(secuenciaJugador);
+    })
+  }, tiempoPorRonda * 1000);
+  console.log(tiempoPorRonda); 
+
+ 
 
   setTimeout(function () {
-    const avanzaRonda = compararJugadas(secuenciaMaquina, secuenciaJugador);
+    avanzaRonda = compararJugadas(secuenciaMaquina, secuenciaJugador);
     avanzarRonda(avanzaRonda);
-  }, 4000);
+  }, tiempoPorRonda * 2000);
+}
+
+function seleccionarCuadroUsuario(secuenciaJugador) {
+  $tablero.onclick = function (event) {
+    secuenciaJugador.push(event.target);
+    resaltarCuadro(obtenerIdCuadro(event.target.id));
+  };
 }
 
 function avanzarRonda(avanzaRonda) {
   if (avanzaRonda) {
+    secuenciaJugador = [];
     manejarRonda();
   } else {
     actualizarEstado("Ha perdido la partida");
@@ -106,8 +119,12 @@ function desbloquearInputJugador() {
 }
 
 function resaltarCuadro(indice) {
-  opacidad(indice, 1);
+  opacidad(indice, 1.5);
   setTimeout(function () {
     opacidad(indice, 0.5);
-  }, 1000);
+  }, 500);
+}
+
+function mostrarRonda(numeroRonda) {
+  document.querySelector("#ronda").textContent = `Ronda: ${numeroRonda}`;
 }
