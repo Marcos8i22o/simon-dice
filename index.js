@@ -13,10 +13,8 @@ $botonEmpezar.onclick = function (event) {
 
   event.preventDefault();
 };
-/*************************************** */
 
 function manejarRonda() {
-  /*------Turno de la máquina-----*/
 
   tiempoPorRonda = secuenciaMaquina.length+1;
 
@@ -39,8 +37,7 @@ function manejarRonda() {
     secuenciaMaquina.forEach(function(){
       seleccionarCuadroUsuario(secuenciaJugador);
     })
-  }, tiempoPorRonda * 1000);
-  console.log(tiempoPorRonda); 
+  }, tiempoPorRonda * 500);
 
  
 
