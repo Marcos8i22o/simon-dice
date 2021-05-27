@@ -20,7 +20,7 @@ function manejarRonda() {
 
   actualizarEstado("Espere su turno");
   mostrarRonda(tiempoPorRonda);
-  bloquearInputJugador();
+  //bloquearInputJugador();
 
   obtenerCuadroAleatorio();
 
@@ -30,7 +30,7 @@ function manejarRonda() {
     }, index * 500);
   });
 
-  desbloquearInputJugador();
+  //desbloquearInputJugador();
   setTimeout(function () {
     actualizarEstado("Su turno...");
 
@@ -109,10 +109,13 @@ function bloquearInputJugador() {
 }
 
 function desbloquearInputJugador() {
-  const $cuadros = document.querySelectorAll(".cuadro");
-  $cuadros.forEach(function ($cuadros) {
-    $cuadros.style.pointerEvents = "all";
-  });
+  // const $cuadros = document.querySelectorAll(".cuadro");
+  // $cuadros.forEach(function ($cuadros) {
+  //   $cuadros.style.pointerEvents = "all";
+  // });
+  $tablero.style.pointerEvents = "all";
+  
+  return '';
 }
 
 function resaltarCuadro(indice) {

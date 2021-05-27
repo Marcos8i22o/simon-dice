@@ -24,3 +24,8 @@
 #estado {
   font-size: large;
 }
+
+#tablero {
+  pointer-events: auto;
+}
+ 
