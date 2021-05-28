@@ -91,6 +91,11 @@ function obtenerCuadroAleatorio() {
 
 function actualizarEstado(estado) {
   document.querySelector("#estado").textContent = estado;
+  if (estado === "Ha perdido la partida") {
+    document.querySelector('#estado').classList.remove("alert-primary") 
+    document.querySelector('#estado').classList.add("alert-danger")  
+  } 
+
 }
 
 function deshabilitarBotonEmpezar() {
