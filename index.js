@@ -1,34 +1,37 @@
 const $botonEmpezar = document.querySelector("#boton-empezar");
-const $botonReiniciar = document.querySelector('#reiniciar');
+const $botonReiniciar = document.querySelector("#reiniciar");
 const $tablero = document.querySelector("#tablero");
-
-
 
 let secuenciaMaquina = [];
 let secuenciaJugador = [];
-let avanzaRonda = true;
-let tiempoPorRonda;
 
-comenzarJuego();
+
+$botonEmpezar.onclick = function (event) {
+  
+  comenzarJuego();
+  
+  event.preventDefault();
+};
+
 $botonReiniciar.onclick = reiniciarJuego;
 
 function comenzarJuego() {
-  $botonEmpezar.onclick = function (event) {
-    deshabilitarBotonEmpezar();
+  let avanzaRonda = true;
+  let tiempoPorRonda = 0;
+  
+  deshabilitarBotonEmpezar();
+  deshabilitarBotonReiniciar();
 
-    manejarRonda();
+  manejarRonda();
 
-    event.preventDefault();
-  };
 }
 
 function manejarRonda() {
-
-  tiempoPorRonda = secuenciaMaquina.length+1;
+  
+  tiempoPorRonda = secuenciaMaquina.length + 1;
 
   actualizarEstado("Espere su turno");
   mostrarRonda(tiempoPorRonda);
-  //bloquearInputJugador();
 
   obtenerCuadroAleatorio();
 
@@ -38,16 +41,13 @@ function manejarRonda() {
     }, index * 500);
   });
 
-  //desbloquearInputJugador();
   setTimeout(function () {
     actualizarEstado("Su turno...");
 
-    secuenciaMaquina.forEach(function(){
+    secuenciaMaquina.forEach(function () {
       seleccionarCuadroUsuario(secuenciaJugador);
-    })
+    });
   }, tiempoPorRonda * 500);
-
- 
 
   setTimeout(function () {
     avanzaRonda = compararJugadas(secuenciaMaquina, secuenciaJugador);
@@ -56,18 +56,17 @@ function manejarRonda() {
 }
 
 function reiniciarJuego() {
+  
   secuenciaMaquina = [];
   secuenciaJugador = [];
-  avanzaRonda = true;
-  tiempoPorRonda = 0;
 
-  habilitarBotonEmpezar();
-  mostrarRonda('-')
-  actualizarEstado(`Presione "Comenzar" para jugar`);
+  habilitarTablero();
+  mostrarRonda("-");
 
   document.querySelector("#estado").classList.remove("alert-dark");
   document.querySelector("#estado").classList.add("alert-primary");
 
+  comenzarJuego();
+
   
 }
-
