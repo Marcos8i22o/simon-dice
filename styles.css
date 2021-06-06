@@ -29,6 +29,10 @@
   pointer-events: auto;
 }
 
-body{
+body {
   background-color: black;
+}
+
+#ronda {
+  color: lightcoral;
 }
