@@ -84,5 +84,4 @@ function resaltarCuadro(indice) {
 
 function mostrarRonda(numeroRonda) {
   document.querySelector("#ronda").textContent = `Ronda: ${numeroRonda}`;
-  console.log(document.querySelector("#ronda").textContent);
 }

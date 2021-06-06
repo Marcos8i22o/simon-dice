@@ -28,4 +28,7 @@
 #tablero {
   pointer-events: auto;
 }
- 
+
+body{
+  background-color: black;
+}
