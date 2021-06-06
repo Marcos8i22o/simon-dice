@@ -22,7 +22,7 @@
 
 
 #estado {
-  font-size: large;
+  font-size: x-large;
 }
 
 #tablero {
@@ -35,4 +35,5 @@ body {
 
 #ronda {
   color: lightcoral;
+  font-size: x-large;
 }
