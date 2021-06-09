@@ -56,7 +56,6 @@ function obtenerCuadroAleatorio() {
   const indice = Math.floor(Math.random() * $cuadros.length);
   secuenciaMaquina.push($cuadros[indice]);
 
-  return secuenciaMaquina;
 }
 
 function actualizarEstado(estado) {

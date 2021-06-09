@@ -41,13 +41,13 @@ function manejarRonda() {
     }, index * 500);
   });
 
-  setTimeout(function () {
+  
     actualizarEstado("Su turno...");
 
     secuenciaMaquina.forEach(function () {
       seleccionarCuadroUsuario(secuenciaJugador);
     });
-  }, tiempoPorRonda * 500);
+  
 
   setTimeout(function () {
     avanzaRonda = compararJugadas(secuenciaMaquina, secuenciaJugador);
