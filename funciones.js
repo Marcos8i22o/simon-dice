@@ -1,9 +1,4 @@
-function seleccionarCuadroUsuario(secuenciaJugador) {
-  $tablero.onclick = function (event) {
-    secuenciaJugador.push(event.target);
-    resaltarCuadro(obtenerIdCuadro(event.target.id));
-  };
-}
+
 
 function avanzarRonda(avanzaRonda) {
   if (avanzaRonda) {
@@ -33,13 +28,13 @@ function deshabilitarBotonReiniciar(){
   $botonReiniciar.disabled = true;
 }
 
-function compararJugadas(arr1, arr2) {
-  for (let i = 0; i < arr1.length; i++) {
-    if (arr1[i] !== arr2[i]) {
+function compararJugadas(jugadaMaquina,jugadaUsuario) {
+  
+    if (jugadaMaquina !== jugadaUsuario) {
       return false;
+    }else{
+      return true;
     }
-  }
-  return true;
 }
 
 function obtenerIdCuadro(posicionArreglo) {

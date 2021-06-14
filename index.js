@@ -5,11 +5,9 @@ const $tablero = document.querySelector("#tablero");
 let secuenciaMaquina = [];
 let secuenciaJugador = [];
 
-
 $botonEmpezar.onclick = function (event) {
-  
   comenzarJuego();
-  
+
   event.preventDefault();
 };
 
@@ -18,45 +16,64 @@ $botonReiniciar.onclick = reiniciarJuego;
 function comenzarJuego() {
   let avanzaRonda = true;
   let tiempoPorRonda = 0;
-  
+
   deshabilitarBotonEmpezar();
   deshabilitarBotonReiniciar();
 
   manejarRonda();
-
 }
 
 function manejarRonda() {
-  
-  tiempoPorRonda = secuenciaMaquina.length + 1;
+  turnoMaquina();
 
-  actualizarEstado("Espere su turno");
-  mostrarRonda(tiempoPorRonda);
+  actualizarEstado("Su turno...");
+  $tablero.onclick = function (event) {
+    secuenciaJugador.push(event.target);
+    resaltarCuadro(obtenerIdCuadro(event.target.id));
+  };
 
-  obtenerCuadroAleatorio();
+  for (let i = 0; i < secuenciaMaquina.length; i++) {
+    let resultado;
+    
+    $tablero.onclick = function (event) {
+      secuenciaJugador.push(event.target);
+      resaltarCuadro(obtenerIdCuadro(event.target.id));
+      resultado = compararJugadas(
+        secuenciaMaquina[i],
+        secuenciaJugador[i]
+      );
+      if (resultado) {
+        secuenciaJugador = [];
+        //turnoMaquina();
+      } else {
+        actualizarEstado("Ha perdido la partida");
+        habilitarBotonReiniciar();
+        deshabilitarTablero();
+      }
+    };
+  }
 
-  secuenciaMaquina.forEach(function (element, index) {
-    setTimeout(function () {
-      resaltarCuadro(obtenerIdCuadro(element.id));
-    }, index * 500);
-  });
+  function turnoMaquina() {
+    tiempoPorRonda = secuenciaMaquina.length + 1;
 
-  
-    actualizarEstado("Su turno...");
+    actualizarEstado("Espere su turno");
+    mostrarRonda(tiempoPorRonda);
 
-    secuenciaMaquina.forEach(function () {
-      seleccionarCuadroUsuario(secuenciaJugador);
+    obtenerCuadroAleatorio();
+
+    secuenciaMaquina.forEach(function (element, index) {
+      setTimeout(function () {
+        resaltarCuadro(obtenerIdCuadro(element.id));
+      }, index * 500);
     });
-  
-
-  setTimeout(function () {
-    avanzaRonda = compararJugadas(secuenciaMaquina, secuenciaJugador);
-    avanzarRonda(avanzaRonda);
-  }, tiempoPorRonda * 2000);
+  }
 }
+//setTimeout(function () {
+//avanzaRonda =
+//avanzarRonda(avanzaRonda);
+//}, tiempoPorRonda * 2000);
 
 function reiniciarJuego() {
-  
   secuenciaMaquina = [];
   secuenciaJugador = [];
 
@@ -67,6 +84,4 @@ function reiniciarJuego() {
   document.querySelector("#estado").classList.add("alert-primary");
 
   comenzarJuego();
-
-  
 }
