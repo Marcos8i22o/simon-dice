@@ -27,31 +27,33 @@ function manejarRonda() {
   turnoMaquina();
 
   actualizarEstado("Su turno...");
-  $tablero.onclick = function (event) {
-    secuenciaJugador.push(event.target);
-    resaltarCuadro(obtenerIdCuadro(event.target.id));
-  };
 
-  for (let i = 0; i < secuenciaMaquina.length; i++) {
-    let resultado;
-    
-    $tablero.onclick = function (event) {
-      secuenciaJugador.push(event.target);
-      resaltarCuadro(obtenerIdCuadro(event.target.id));
-      resultado = compararJugadas(
-        secuenciaMaquina[i],
-        secuenciaJugador[i]
-      );
+  let i = 0;
+  
+
+  $tablero.onclick = function (event) {
+    let resultado = false;
+    const $cuadro = event.target;
+
+    if ($cuadro.classList.contains("cuadro")) {
+      secuenciaJugador.push($cuadro);
+      resaltarCuadro(obtenerIdCuadro($cuadro.id));
+
+      resultado = compararJugadas(secuenciaMaquina[i], $cuadro);
+    }
+
+    /*El usuario tiene que poder jugar más de una vez si el arreglo de la 
+      máquina tiene más de una jugada */
+    if (secuenciaJugador.length === secuenciaMaquina.length) {
       if (resultado) {
-        secuenciaJugador = [];
-        //turnoMaquina();
+        setTimeout(manejarRonda(), 1000);
       } else {
         actualizarEstado("Ha perdido la partida");
         habilitarBotonReiniciar();
         deshabilitarTablero();
       }
-    };
-  }
+    }
+  };
 
   function turnoMaquina() {
     tiempoPorRonda = secuenciaMaquina.length + 1;
