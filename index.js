@@ -4,6 +4,7 @@ const $tablero = document.querySelector("#tablero");
 
 let secuenciaMaquina = [];
 let secuenciaJugador = [];
+let cantidadDeJugadas = 0;
 
 $botonEmpezar.onclick = function (event) {
   comenzarJuego();
@@ -14,8 +15,7 @@ $botonEmpezar.onclick = function (event) {
 $botonReiniciar.onclick = reiniciarJuego;
 
 function comenzarJuego() {
-  let avanzaRonda = true;
-  let tiempoPorRonda = 0;
+  
 
   deshabilitarBotonEmpezar();
   deshabilitarBotonReiniciar();
@@ -25,38 +25,44 @@ function comenzarJuego() {
 
 function manejarRonda() {
   turnoMaquina();
-
   actualizarEstado("Su turno...");
-
-  let i = 0;
+  cantidadDeJugadas = 0;
   
-
-  $tablero.onclick = function (event) {
-    let resultado = false;
+  $tablero.onclick = manejarClickTablero;
+  
+  function manejarClickTablero (event) {
+    
     const $cuadro = event.target;
 
     if ($cuadro.classList.contains("cuadro")) {
       secuenciaJugador.push($cuadro);
       resaltarCuadro(obtenerIdCuadro($cuadro.id));
 
-      resultado = compararJugadas(secuenciaMaquina[i], $cuadro);
     }
+    let resultado = compararJugadas(secuenciaMaquina[secuenciaMaquina.length - 1], $cuadro);
+    cantidadDeJugadas++;
 
-    /*El usuario tiene que poder jugar más de una vez si el arreglo de la 
-      máquina tiene más de una jugada */
-    if (secuenciaJugador.length === secuenciaMaquina.length) {
+    
+    if (cantidadDeJugadas === secuenciaMaquina.length) {
       if (resultado) {
-        setTimeout(manejarRonda(), 1000);
+
+        cantidadDeJugadas = 0;
+        setTimeout(function () {
+          manejarRonda()
+        }, 1000);
       } else {
-        actualizarEstado("Ha perdido la partida");
-        habilitarBotonReiniciar();
-        deshabilitarTablero();
+        setTimeout(function () {
+          actualizarEstado("Ha perdido la partida"),
+            deshabilitarTablero(),
+            habilitarBotonReiniciar()
+        }, 1000)
       }
     }
   };
 
+
   function turnoMaquina() {
-    tiempoPorRonda = secuenciaMaquina.length + 1;
+    let tiempoPorRonda = secuenciaMaquina.length + 1;
 
     actualizarEstado("Espere su turno");
     mostrarRonda(tiempoPorRonda);
@@ -64,20 +70,19 @@ function manejarRonda() {
     obtenerCuadroAleatorio();
 
     secuenciaMaquina.forEach(function (element, index) {
+
       setTimeout(function () {
         resaltarCuadro(obtenerIdCuadro(element.id));
-      }, index * 500);
+      }, index * 1000);
     });
   }
 }
-//setTimeout(function () {
-//avanzaRonda =
-//avanzarRonda(avanzaRonda);
-//}, tiempoPorRonda * 2000);
+
 
 function reiniciarJuego() {
   secuenciaMaquina = [];
   secuenciaJugador = [];
+  cantidadDeJugadas = 0;
 
   habilitarTablero();
   mostrarRonda("-");
